@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChichaShop - Информация</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            background: #1f172b;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .all{
+            margin-top:px;
+        }
+
+        .info-container {
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            margin-top:150px;
+            animation: floatIn 0.8s ease-out;
+        }
+        .info-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            display: block;
+            animation: pulse 2s infinite;
+        }
+        .info-title {
+            color: #b73ce7;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(183, 60, 231, 0.4);
+        }
+        .info-text {
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            padding: 0 10px;
+        }
+        .info-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #b73ce7, #9c27b0);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(183, 60, 231, 0.3);
+        }
+        .info-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(183, 60, 231, 0.5);
+        }
+        .image {
+           background-image:url(images/vapehead.png);
+           background-size: cover;
+           background-position: center;
+           position: absolute;
+           height:300px;
+           width:400px;
+           margin-bottom:350px;
+           animation: floatIn 0.8s ease-out;
+        
+        }
+        @keyframes floatIn {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="all image"></div>
+    <div class="all info-container">
+        <div class="all info-icon"></div>
+        <h1 class="all info-title">Бесполезная Страница </h1>
+        <p class="all info-text">
+            Вы перешли на страничку, которая не обзавелась полезным содержимым.<br>
+            
+        </p>
+        <a href="index.html" class="all info-button">Вернуться в магазин</a>
+    </div>
+</body>
+</html>

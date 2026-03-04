@@ -1,0 +1,483 @@
+::-webkit-scrollbar {
+    display:none;
+}
+/* ===== СТИЛИ ДЛЯ СТРАНИЦЫ ЗАКАЗОВ ===== */
+body {
+    background: #0f0f1a;
+    color: #ffffff;
+    font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.site {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Хедер */
+.site-header {
+    background: linear-gradient(90deg, #1a0f2e, #2d1b42);
+    color: #fff;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    box-shadow: 0 2px 20px rgba(139, 92, 246, 0.2);
+    border-bottom: 1px solid #372554;
+    min-height:61.5px;
+}
+
+.brand {
+    font-weight: 700;
+    font-size: 22px;
+    color: #e2e8f0;
+    text-shadow: 0 0 10px rgba(183, 60, 231, 0.3);
+    text-decoration:none;
+}
+
+
+
+/* .profile-header-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+} */
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.nav-btn {
+    padding: 10px 16px;
+    border-radius: 6px;
+    color: #e2e8f0;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    background: transparent;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.nav-btn:hover {
+    background: rgba(183, 60, 231, 0.1);
+    border-color: #b73ce7;
+    transform: translateY(-2px);
+}
+
+/*.nav-btn.active {
+    background: #8a2fae;
+    color: white;
+    box-shadow: 0 4px 15px rgba(183, 60, 231, 0.3);
+}*/
+
+/* Контент */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    flex: 1;
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: 50px;
+    animation: fadeInUp 0.6s ease;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    color: #b73ce7;
+    margin-bottom: 15px;
+    text-shadow: 0 0 15px rgba(183, 60, 231, 0.4);
+}
+
+.page-header p {
+    color: #cbd5e1;
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Табы */
+.orders-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #2d3748;
+    padding-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    padding: 12px 20px;
+    border: none;
+    background: transparent;
+    color: #cbd5e1;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.tab-btn:hover {
+    background: rgba(183, 60, 231, 0.1);
+    color: #b73ce7;
+    transform: translateY(-2px);
+}
+
+.tab-btn.active {
+    background: #b73ce7;
+    color: white;
+    box-shadow: 0 4px 15px rgba(183, 60, 231, 0.3);
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Карточка заказа */
+.order-card {
+    background: #1a1a2e;
+    border: 1px solid #2d3748;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.order-card:hover {
+    border-color: #b73ce7;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #2d3748;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.order-info h3 {
+    color: #ffffff;
+    margin: 0 0 5px 0;
+    font-size: 1.2rem;
+}
+
+.order-date {
+    color: #cbd5e1;
+    font-size: 0.9rem;
+}
+
+.order-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.status-pending { background: #f59e0b; color: white; }
+.status-confirmed { background: #3b82f6; color: white; }
+.status-shipped { background: #8b5cf6; color: white; }
+.status-delivered { background: #10b981; color: white; }
+.status-cancelled { background: #ef4444; color: white; }
+
+.order-items {
+    margin-bottom: 20px;
+}
+
+.order-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 0;
+    border-bottom: 1px solid #2d3748;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.order-item img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+    background: #0f0f1a;
+    padding: 5px;
+}
+
+.item-info h4 {
+    color: #ffffff;
+    margin: 0 0 5px 0;
+    font-size: 0.95rem;
+}
+
+.item-info span {
+    color: #cbd5e1;
+    font-size: 0.85rem;
+}
+
+.order-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.order-total {
+    font-weight: bold;
+    color: #b73ce7;
+    font-size: 1.1rem;
+}
+
+/* Empty states */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #cbd5e1;
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.7;
+}
+
+.empty-state h3 {
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    margin-bottom: 20px;
+    font-size: 1rem;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from { 
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .profile-header-actions {
+        display: none;
+    }
+    
+    .order-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .order-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* СТИЛИ ДЛЯ ИЗБРАННОГО */
+.wishlist-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.wishlist-header h2 {
+    color: #b73ce7;
+    margin-bottom: 10px;
+}
+
+.wishlist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.wishlist-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #cbd5e1;
+}
+
+.wishlist-empty .empty-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.7;
+}
+
+.wishlist-card {
+    background: #1a1a2e;
+    border: 1px solid #2d3748;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.wishlist-card:hover {
+    border-color: #b73ce7;
+    transform: translateY(-5px);
+}
+
+.remove-favorite {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.remove-favorite:hover {
+    background: rgba(239, 68, 68, 0.2);
+}
+
+/* АНИМАЦИЯ ДЛЯ ВКЛАДОК */
+.tab-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: #b73ce7;
+    transition: width 0.3s ease;
+}
+
+.tab-btn.active::after {
+    width: 100%;
+}
+
+/* АНИМАЦИЯ ПОЯВЛЕНИЯ КОНТЕНТА */
+.tab-content {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ИЗБРАННОЕ - КРАСИВЫЕ КАРТОЧКИ */
+.wishlist-card {
+    animation: cardAppear 0.4s ease;
+    animation-fill-mode: both;
+}
+
+.wishlist-card:nth-child(1) { animation-delay: 0.1s; }
+.wishlist-card:nth-child(2) { animation-delay: 0.2s; }
+.wishlist-card:nth-child(3) { animation-delay: 0.3s; }
+.wishlist-card:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes cardAppear {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px) scale(0.95); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+    }
+}
+
+/* АНИМАЦИЯ УДАЛЕНИЯ ИЗ ИЗБРАННОГО */
+.wishlist-card.removing {
+    animation: cardRemove 0.3s ease forwards;
+}
+
+@keyframes cardRemove {
+    to { 
+        opacity: 0; 
+        transform: translateX(100px) rotate(10deg); 
+    }
+}
+
+/* Анимация для ВСЕХ вкладок */
+.tab-content {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.tab-content.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Плавная анимация кнопок */
+.tab-btn {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.tab-btn.active {
+    background: #b73ce7;
+    color: white;
+    box-shadow: 0 4px 15px rgba(183, 60, 231, 0.3);
+}
+
+.tab-btn:not(.active):hover {
+    background: rgba(183, 60, 231, 0.1);
+    transform: translateY(-2px);
+}
+
+.language-selector select {
+    
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    background: #2d1b42;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    border: 1px solid #4c3575;
+}

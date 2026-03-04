@@ -1,0 +1,514 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои заказы - ChichaShop</title>
+
+    <link rel="stylesheet" href="css/orders.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+    /* Анимации */
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+    
+    /* Кнопки */
+    .btn {
+        padding: 10px 20px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+        background: #b73ce7;
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background: #9d2cc7;
+    }
+    
+    .btn-secondary {
+        background: #3b82f6;
+        color: white;
+    }
+    
+    .btn-danger {
+        background: #ef4444;
+        color: white;
+    }
+    
+    .btn-ghost {
+        background: transparent;
+        border: 1px solid #b73ce7;
+        color: #b73ce7;
+    }
+    
+    .order-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+    }
+</style>
+</head>
+<body>
+
+    <div class="site">
+        <header class="site-header">
+            <div class="brand"><a href="index.html">ChichaShop</a></div>
+            <div class="header-actions profile-header-actions">
+                <a href="index.html" class="nav-btn">🛍️ Каталог</a>
+                <a href="orders.html" class="nav-btn active">📦 Заказы</a>
+                <a href="profile.html" class="nav-btn">👤 Профиль</a>
+            </div>
+        </header>
+
+        <div class="container">
+            <main class="content">
+                <div class="page-header">
+                    <h1>📦 Мои заказы</h1>
+                    <p>История ваших покупок и отложенные товары</p>
+                </div>
+
+                <div class="orders-tabs">
+                    <button class="tab-btn active" onclick="switchTab('current')">
+                        🛒 Текущие заказы
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('history')">
+                        📋 История заказов
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('wishlist')">
+                        ❤️ Список желаний
+                    </button>
+                </div>
+
+                <!-- Текущие заказы -->
+                <div id="current-orders" class="tab-content active">
+                    <div id="currentOrdersList">
+                        <!-- Загрузятся через JS -->
+                    </div>
+                </div>
+
+                <!-- История заказов -->
+                <div id="history-orders" class="tab-content">
+                    <div id="historyOrdersList">
+                        <!-- Загрузятся через JS -->
+                    </div>
+                </div>
+
+                <!-- Список желаний -->
+                <!-- Список желаний -->
+<div id="wishlist" class="tab-content">
+    <div class="wishlist-header">
+        <h2>❤️ Мое избранное</h2>
+        <p>Товары, которые вы добавили в избранное</p>
+    </div>
+    
+    <div id="wishlistContent">
+        <!-- Контент загрузится через JS -->
+    </div>
+</div>
+                    
+                    <div id="emptyWishlist" class="empty-state">
+                        <div class="empty-icon">❤️</div>
+                        <h3>Список желаний </h3>
+                        <p>Добавляйте товары в корзину чтобы они появились здесь</p>
+                        <a href="index.html" class="btn btn-primary">Перейти в каталог</a>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Список желаний -->
+
+
+        <footer class="site-footer">
+            <!-- Футер -->
+        </footer>
+    </div>
+
+    
+    <script>
+        // ЗАМЕНИ весь script в orders.html на этот:
+document.addEventListener('DOMContentLoaded', function() {
+    const userData = localStorage.getItem('currentUser');
+    
+    if (!userData) {
+        alert('Сначала войдите в систему!');
+        window.location.href = 'index.html';
+        return;
+    }
+
+    try {
+        const user = JSON.parse(userData);
+        loadOrdersData(user);
+        loadWishlist(user.favorites || []);
+    } catch (e) {
+        console.error('Error loading orders:', e);
+    }
+});
+
+function loadOrdersData(user) {
+    loadCurrentOrders(user.orders || []);
+    loadHistoryOrders(user.orders || []);
+}
+
+// В orders.html ОБНОВИ функции:
+function loadCurrentOrders(orders) {
+    const container = document.getElementById('currentOrdersList');
+    const emptyState = container.querySelector('.empty-state');
+    
+    const currentOrders = orders.filter(order => 
+        order.status && order.status !== 'delivered' && order.status !== 'cancelled'
+    );
+    
+    if (currentOrders.length === 0) {
+        if (!emptyState) {
+            container.innerHTML = `
+                <div class="empty-state" style="text-align: center; padding: 50px 20px;">
+                    <div style="font-size: 64px; margin-bottom: 20px;">📦</div>
+                    <h3 style="color: #ffffff; margin-bottom: 10px;">Нет текущих заказов</h3>
+                    <p style="color: #cbd5e1; margin-bottom: 20px;">Ваши новые заказы появятся здесь</p>
+                    <a href="index.html" class="btn btn-primary">Сделать заказ</a>
+                </div>
+            `;
+        }
+        return;
+    }
+    
+    // Есть заказы - удаляем empty state
+    if (emptyState) {
+        emptyState.remove();
+    }
+    
+    // Показываем заказы
+    container.innerHTML = currentOrders.map(order => `
+        <!-- карточка заказа -->
+    `).join('');
+}
+
+function loadHistoryOrders(orders) {
+    const historyOrders = orders.filter(order => 
+        order.status && (order.status === 'delivered' || order.status === 'cancelled')
+    );
+    
+    const container = document.getElementById('historyOrdersList');
+    
+    if (historyOrders.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">📋</div>
+                <h3>История заказов пуста</h3>
+                <p>Здесь появятся завершенные заказы</p>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = historyOrders.map(order => `
+        <div class="order-card">
+            <div class="order-header">
+                <div class="order-info">
+                    <h3>Заказ #${order.id}</h3>
+                    <span class="order-date">${new Date(order.date).toLocaleDateString('ru-RU')}</span>
+                </div>
+                <div class="order-status status-${order.status}">
+                    ${getStatusText(order.status)}
+                </div>
+            </div>
+            <div class="order-items">
+                ${order.items.map(item => `
+                    <div class="order-item">
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="item-info">
+                            <h4>${item.name}</h4>
+                            <span>${item.quantity} шт. × ${item.price} ₽</span>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+            <div class="order-footer">
+                <div class="order-total">Итого: ${order.total} ₽</div>
+                ${order.status === 'delivered' ? 
+                    '<button class="btn btn-primary">Оставить отзыв</button>' : 
+                    '<button class="btn btn-ghost">Повторить заказ</button>'
+                }
+            </div>
+        </div>
+    `).join('');
+}
+
+// В orders.html ОБНОВИ функцию loadWishlist:
+
+function loadWishlist() {
+    const container = document.getElementById('wishlistContent');
+    if (!container) return;
+
+    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const favorites = user.favorites || [];
+    const products = window.products || [];
+
+    if (favorites.length === 0) {
+        container.innerHTML = `
+            <div style="text-align: center; padding: 50px 20px;">
+                <div style="font-size: 60px; color: #b73ce7; margin-bottom: 20px;">❤️</div>
+                <h3 style="color: #ffffff; margin-bottom: 10px;">Список желаний пуст</h3>
+                <p style="color: #cbd5e1; margin-bottom: 25px;">Товары, которые вы добавите в избранное, появятся здесь</p>
+                <a href="index.html" class="btn btn-primary">Перейти в каталог</a>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = `
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+            ${favorites.map(fav => {
+                const product = products.find(p => p.id === fav.id) || fav;
+                
+                return `
+                    <div class="wishlist-item" 
+                         style="background: linear-gradient(145deg, #1a1a2e, #2d1b42);
+                                border: 1px solid #372554;
+                                border-radius: 12px;
+                                overflow: hidden;
+                                transition: all 0.3s ease;
+                                position: relative;">
+                        
+                        <!-- Кнопка удаления -->
+                        <button onclick="removeFromWishlist(${product.id})"
+                                style="position: absolute; top: 10px; right: 10px;
+                                       background: rgba(239, 68, 68, 0.9);
+                                       border: none;
+                                       width: 32px; height: 32px;
+                                       border-radius: 50%;
+                                       color: white;
+                                       cursor: pointer;
+                                       display: flex;
+                                       align-items: center;
+                                       justify-content: center;
+                                       z-index: 2;">
+                            ✕
+                        </button>
+                        
+                        <!-- Изображение -->
+                        <div style="height: 180px; background: #0f0f1a;
+                                    display: flex; align-items: center; justify-content: center;
+                                    padding: 20px;">
+                            <img src="${product.image}" 
+                                 alt="${product.name}"
+                                 style="max-height: 140px; max-width: 100%;
+                                        object-fit: contain;"
+                                 onerror="this.src='https://via.placeholder.com/200x200/1a1a2e/b73ce7?text=Product'">
+                        </div>
+                        
+                        <!-- Контент -->
+                        <div style="padding: 20px;">
+                            <!-- Название -->
+                            <h4 style="color: #ffffff; margin: 0 0 8px 0;
+                                       font-size: 16px; line-height: 1.4;
+                                       height: 45px; overflow: hidden;">
+                                ${product.name}
+                            </h4>
+                            
+                            <!-- Цена -->
+                            <div style="color: #b73ce7; font-size: 20px;
+                                        font-weight: bold; margin: 10px 0;">
+                                ${product.price || 0} ₽
+                            </div>
+                            
+                            <!-- Бейджи -->
+                            ${product.badges && product.badges.length > 0 ? `
+                                <div style="display: flex; gap: 5px; margin: 10px 0;">
+                                    ${product.badges.map(badge => `
+                                        <span style="background: rgba(183, 60, 231, 0.2);
+                                                     color: #b73ce7;
+                                                     padding: 3px 8px;
+                                                     border-radius: 10px;
+                                                     font-size: 11px;">
+                                            ${badge}
+                                        </span>
+                                    `).join('')}
+                                </div>
+                            ` : ''}
+                            
+                            <!-- Кнопки -->
+                            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                                <button onclick="addToCartFromWishlist(${product.id})"
+                                        style="flex: 1; background: #b73ce7;
+                                               color: white; border: none;
+                                               padding: 10px; border-radius: 6px;
+                                               cursor: pointer; font-weight: 500;">
+                                    🛒 В корзину
+                                </button>
+                                
+                                <button onclick="window.location.href='product.html?id=${product.id}'"
+                                        style="background: transparent;
+                                               border: 1px solid #b73ce7;
+                                               color: #b73ce7;
+                                               padding: 10px; border-radius: 6px;
+                                               cursor: pointer;">
+                                    👁️
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+    `;
+}
+
+function removeFromWishlist(productId, button) {
+    // Удаляем элемент сразу
+    const item = button.closest('.wishlist-item');
+    if (item) {
+        item.style.opacity = '0';
+        item.style.transform = 'translateX(100px)';
+        setTimeout(() => item.remove(), 300);
+    }
+    
+    // Удаляем из избранного
+    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (user.favorites) {
+        user.favorites = user.favorites.filter(fav => fav.id !== productId);
+        localStorage.setItem('currentUser', JSON.stringify(user));
+    }
+    
+    // Показываем уведомление
+    showNotification('Товар удален из избранного');
+}
+
+function addToCartFromWishlist(productId) {
+    if (window.shop) {
+        shop.addToCart(productId);
+        showWishlistNotification('Товар добавлен в корзину');
+    }
+}
+
+function showWishlistNotification(message) {
+    // Простое уведомление
+    alert(message);
+}
+
+function switchTab(tabName) {
+    // 1. Убираем активные классы
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+        tab.style.opacity = '0';
+        tab.style.transform = 'translateY(10px)';
+    });
+    
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // 2. Добавляем активные классы
+    event.target.classList.add('active');
+    const tabElement = document.getElementById(tabName + '-orders') || document.getElementById(tabName);
+    
+    if (tabElement) {
+        tabElement.classList.add('active');
+        
+        // 3. Анимация появления
+        setTimeout(() => {
+            tabElement.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            tabElement.style.opacity = '1';
+            tabElement.style.transform = 'translateY(0)';
+        }, 50);
+    }
+    
+    // 4. Загружаем данные если это избранное
+    if (tabName === 'wishlist') {
+        setTimeout(() => {
+            if (typeof loadWishlist === 'function') {
+                loadWishlist();
+            }
+        }, 300);
+    }
+}
+
+
+// В orders.html в script ДОБАВЬ в конец функции loadOrdersData:
+function loadOrdersData(user) {
+    loadCurrentOrders(user.orders || []);
+    loadHistoryOrders(user.orders || []);
+    loadWishlist(user.favorites || []); // ← ДОБАВЬ ЭТУ СТРОЧКУ
+}
+    </script>
+<script>
+// ЕДИНЫЙ СКРИПТ ДЛЯ ИЗБРАННОГО
+document.addEventListener('DOMContentLoaded', function() {
+    // Инициализация сердечек
+    updateFavoriteButtons();
+    
+    // Обработчик кликов
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('favorite-btn')) {
+            e.preventDefault();
+            handleFavoriteClick(e.target);
+        }
+    });
+});
+
+function handleFavoriteClick(btn) {
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    if (!user) {
+        alert('Войдите в систему чтобы добавить в избранное');
+        return;
+    }
+    
+    const card = btn.closest('.card');
+    const productId = parseInt(card.dataset.productId);
+    
+    if (!user.favorites) user.favorites = [];
+    
+    const isFavorite = user.favorites.some(fav => fav.id === productId);
+    
+    // Анимация
+    btn.style.transform = 'scale(1.3)';
+    
+    setTimeout(() => {
+        btn.style.transform = 'scale(1)';
+        
+        if (isFavorite) {
+            // Удаляем
+            user.favorites = user.favorites.filter(fav => fav.id !== productId);
+            btn.innerHTML = '🤍';
+            btn.classList.remove('active');
+        } else {
+            // Добавляем
+            user.favorites.push({id: productId});
+            btn.innerHTML = '❤️';
+            btn.classList.add('active');
+        }
+        
+        // Сохраняем
+        localStorage.setItem('currentUser', JSON.stringify(user));
+    }, 200);
+}
+
+
+// В конец скрипта на всех страницах
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
+
+function openModal(modalId) {
+    document.getElementById(modalId).style.display = 'flex';
+}
+</script>
+    
+    <script src="js/products.js"></script>
+</body>
+</html>

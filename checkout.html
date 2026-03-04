@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оформление заказа - ChichaShop</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .checkout-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .checkout-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .checkout-steps::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #2d3748;
+            z-index: 1;
+        }
+
+        .step {
+            background: #1a1a2e;
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 1px solid #2d3748;
+            position: relative;
+            z-index: 2;
+            color: #cbd5e1;
+        }
+
+        .step.active {
+            background: #b73ce7;
+            color: white;
+            border-color: #b73ce7;
+        }
+
+        .checkout-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+        }
+
+        .checkout-form {
+            background: #1a1a2e;
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        .order-summary {
+            background: #1a1a2e;
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            padding: 25px;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: #0f0f1a;
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #b73ce7;
+        }
+
+        .payment-methods {
+            margin: 30px 0;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method:hover {
+            border-color: #b73ce7;
+            background: rgba(183, 60, 231, 0.05);
+        }
+
+        .payment-method.selected {
+            border-color: #b73ce7;
+            background: rgba(183, 60, 231, 0.1);
+        }
+
+        .payment-method img {
+            height: 24px;
+            width: auto;
+        }
+
+        .order-items {
+            margin: 20px 0;
+        }
+
+        .order-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 0;
+            border-bottom: 1px solid #2d3748;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .order-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            border-radius: 8px;
+            background: #0f0f1a;
+            padding: 5px;
+        }
+
+        .order-total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #b73ce7;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid #2d3748;
+        }
+
+        .crypto-payment {
+            background: rgba(247, 147, 26, 0.1);
+            border: 1px solid #f7931a;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+        .crypto-address {
+            background: #0f0f1a;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            word-break: break-all;
+            margin: 10px 0;
+        }
+
+        .payment-status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .status-pending { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+        .status-success { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .status-failed { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+
+        @media (max-width: 768px) {
+            .checkout-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .checkout-steps {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .checkout-steps::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="site">
+        <header class="site-header">
+            <div class="brand"><a href="index.html">ChichaShop</a></div>
+            <div class="header-actions">
+                <a href="index.html" class="nav-btn">🛍️ Каталог</a>
+                <a href="cart.html" class="nav-btn">🛒 Корзина</a>
+            </div>
+        </header>
+
+        <div class="checkout-container">
+            <div class="checkout-steps">
+                <div class="step active">1. Данные доставки</div>
+                <div class="step">2. Способ оплаты</div>
+                <div class="step">3. Подтверждение</div>
+            </div>
+
+            <div class="checkout-content">
+                <div class="checkout-form">
+                    <h3>Данные доставки</h3>
+                    
+                    <div class="form-group">
+                        <label>ФИО *</label>
+                        <input type="text" id="fullName" placeholder="Иванов Иван Иванович" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="email" placeholder="your@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Телефон *</label>
+                        <input type="tel" id="phone" placeholder="+7 (999) 999-99-99" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Адрес доставки *</label>
+                        <textarea id="address" rows="3" placeholder="Город, улица, дом, квартира" required></textarea>
+                    </div>
+
+
+                    <div class="payment-methods">
+    <h3>Способ оплаты</h3>
+    <div class="payment-method" data-method="crypto">
+        <span>₿</span>
+        <div>
+            <strong>Криптовалюта</strong>
+            <div style="font-size: 12px; color: #cbd5e1;">Bitcoin, USDT, TON - Анонимно и безопасно</div>
+        </div>
+    </div>
+    
+    <div class="payment-method" data-method="telegram">
+        <span>📱</span>
+        <div>
+            <strong>Telegram</strong>
+            <div style="font-size: 12px; color: #cbd5e1;">Обсуждение и альтернативные способы оплаты</div>
+        </div>
+    </div>
+</div>
+                
+                              
+                    <!-- Крипто оплата (показывается только при выборе crypto) -->
+                    <div id="cryptoPayment" class="crypto-payment" style="display: none;">
+                        <h4>Оплата криптовалютой</h4>
+                        <p>Выберите валюту для оплаты:</p>
+                        
+                        <select id="cryptoCurrency" class="form-input">
+                            <option value="btc">Bitcoin (BTC)</option>
+                            <option value="usdt">USDT (TRC-20)</option>
+                            
+                        </select>
+                        
+                        <div id="cryptoDetails" style="margin-top: 15px;">
+                            <!-- Сюда подгрузится адрес и QR код -->
+                        </div>
+                    </div>
+
+                    <button id="confirmOrder" class="btn btn-primary" style="width: 100%; margin-top: 20px;">
+                        Подтвердить заказ
+                    </button>
+                </div>
+
+                <div class="order-summary">
+                    <h3>Ваш заказ</h3>
+                    <div id="orderItems">
+                        <!-- Товары загружаются через JS -->
+                    </div>
+                    <div class="order-total" id="orderTotal">
+                        Итого: 0 ₽
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="site-footer">
+            <!-- Стандартный футер -->
+        </footer>
+    </div>
+<script>
+// ЕДИНЫЙ СКРИПТ ДЛЯ ИЗБРАННОГО
+document.addEventListener('DOMContentLoaded', function() {
+    // Инициализация сердечек
+    updateFavoriteButtons();
+    
+    // Обработчик кликов
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('favorite-btn')) {
+            e.preventDefault();
+            handleFavoriteClick(e.target);
+        }
+    });
+});
+
+function handleFavoriteClick(btn) {
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    if (!user) {
+        alert('Войдите в систему чтобы добавить в избранное');
+        return;
+    }
+    
+    const card = btn.closest('.card');
+    const productId = parseInt(card.dataset.productId);
+    
+    if (!user.favorites) user.favorites = [];
+    
+    const isFavorite = user.favorites.some(fav => fav.id === productId);
+    
+    // Анимация
+    btn.style.transform = 'scale(1.3)';
+    
+    setTimeout(() => {
+        btn.style.transform = 'scale(1)';
+        
+        if (isFavorite) {
+            // Удаляем
+            user.favorites = user.favorites.filter(fav => fav.id !== productId);
+            btn.innerHTML = '🤍';
+            btn.classList.remove('active');
+        } else {
+            // Добавляем
+            user.favorites.push({id: productId});
+            btn.innerHTML = '❤️';
+            btn.classList.add('active');
+        }
+        
+        // Сохраняем
+        localStorage.setItem('currentUser', JSON.stringify(user));
+    }, 200);
+}
+
+function updateFavoriteButtons() {
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    if (!user || !user.favorites) return;
+    
+    document.querySelectorAll('.favorite-btn').forEach(btn => {
+        const card = btn.closest('.card');
+        if (!card) return;
+        
+        const productId = parseInt(card.dataset.productId);
+        const isFavorite = user.favorites.some(fav => fav.id === productId);
+        
+        if (isFavorite) {
+            btn.innerHTML = '❤️';
+            btn.classList.add('active');
+        }
+    });
+}
+// В конец скрипта на всех страницах
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
+
+function openModal(modalId) {
+    document.getElementById(modalId).style.display = 'flex';
+}
+</script>
+
+   
+    <script src="js/checkout-system.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,957 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+    
+
+</script>
+    <script>
+    // Проверка браузера
+    var isEdge = /Edg/.test(navigator.userAgent);
+    var isIE = /Trident|MSIE/.test(navigator.userAgent);
+    var isOldBrowser = isEdge || isIE || !window.Promise || !window.fetch;
+
+    if (isOldBrowser) {
+        document.write('<script src="js/edge-fix.js"><\/script>');
+        console.log('📱 Old browser detected, loading fixes...');
+    }
+</script>
+    <!-- В начале <head> каждой страницы -->
+<script src="js/compatibility-fix.js"></script>
+    <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChichaShop - Электронные сигареты</title>
+    <link rel="stylesheet" href="css/style.css">
+    
+
+    <!-- SEO мета-теги -->
+<meta name="description" content="ChichaShop - магазин электронных сигарет, жидкостей и аксессуаров. Премиум качество, быстрая доставка, лучшие цены.">
+<meta name="keywords" content="электронные сигареты, вейп, жидкости для вейпа, моды, атомайзеры, аксессуары для вейпа">
+<meta name="author" content="ChichaShop">
+
+<!-- Open Graph для соцсетей -->
+<meta property="og:title" content="ChichaShop - Магазин электронных сигарет">
+<meta property="og:description" content="Премиум электронные сигареты и аксессуары">
+<meta property="og:image" content="https://ваш-сайт.com/logo.png">
+<meta property="og:url" content="https://ваш-сайт.com">
+
+
+
+  <!-- Совместимость с Edge -->
+    <script>
+        // Фикс для Edge
+        if (!window.fetch) {
+            document.write('<script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@3.6.0/dist/fetch.umd.min.js"><\/script>');
+        }
+        if (!window.localStorage) {
+            document.write('<script src="https://cdn.jsdelivr.net/npm/localstorage-slim@2.3.0/dist/localstorage-slim.min.js"><\/script>');
+        }
+    </script>
+<!-- Структурированные данные для Google -->
+<script type="application/ld+json">
+
+</script>
+
+<!-- Canonical URL -->
+<link rel="canonical" href="https://ваш-сайт.com">
+
+<!-- Favicon
+<link rel="icon" type="image/x-icon" href="/favicon.ico"> -->
+
+
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'GA_MEASUREMENT_ID');
+</script>
+
+
+
+</head>
+<body>
+    <div class="site">
+        <header class="site-header">
+              <div class="brand" data-i18n="ChichaShop">ChichaShop</div>
+            
+            <div class="language-selector">
+                <select id="languageSelect">
+                    <option value="en">English</option>
+
+                    <option value="ru">Русский</option>
+                    <option value="uk">Українська</option>
+
+
+                </select>
+            </div>
+
+
+            <div class="search">
+        <input type="search" id="search" data-i18n-placeholder="searchPlaceholder" placeholder="Поиск товаров..."/>
+    </div>
+
+            <!-- В index.html ЗАМЕНИ header-actions на это: -->
+
+
+            <div class="header-actions profile-btn">
+                <a href="index.html" class="nav-btn active">🛍️ Каталог</a>
+                <a href="orders.html" class="nav-btn ">📦 Заказы</a>
+                <!--<a href="profile.html" class="nav-btn">👤 Профиль</a> -->
+            </div>
+        <div class="header-actions" style="display: flex; gap: 10px; align-items: center;">
+    <!-- Поиск остается на месте -->
+
+    <!-- Умная кнопка авторизации -->
+    <div class="auth-buttons " style="display: flex; gap: 8px;">
+        <button class="nav-btn aboba" id="authBtn" style="padding: 10px 20px; ">
+            <!-- <span>👤</span> -->
+            <span>Войти</span>
+        </button>
+        <button class="btn btn-primary" id="registerBtn" style="padding: 10px 20px;">
+            <!-- <span>✨</span> -->
+            <span>Регистрация</span>
+        </button>
+    </div>
+</div>
+            </div>
+        </header>
+
+        <div class="container">
+            <aside class="filter-sidebar-wrapper">
+    <div class="filter-sidebar">
+        <div class="filter-header">
+            <h3>Фильтры</h3>
+            <button class="filter-clear-all" onclick="shop.clearFilters()">Очистить</button>
+        </div>
+
+        <!-- Категории -->
+        <div class="filter-checkboxes" id="catFilters">
+    <label class="filter-checkbox">
+        <input type="checkbox" value="vape" onchange="shop.applyFilters()"> Электронные сигареты
+    </label>
+    <label class="filter-checkbox">
+        <input type="checkbox" value="liquid" onchange="shop.applyFilters()"> Жидкости
+    </label>
+    <label class="filter-checkbox">
+        <input type="checkbox" value="mod" onchange="shop.applyFilters()"> Моды
+    </label>
+    <label class="filter-checkbox">
+        <input type="checkbox" value="atomizer" onchange="shop.applyFilters()"> Атомайзеры
+    </label>
+    <label class="filter-checkbox">
+        <input type="checkbox" value="accessory" onchange="shop.applyFilters()"> Аксессуары
+    </label>
+</div>
+
+        <!-- Бренды -->
+        <div class="filter-section">
+            <div class="filter-section-header">
+                <h4>Бренды</h4>
+            </div>
+            <div class="filter-checkboxes" id="brandFilters">
+                <!-- Бренды загрузятся через JS -->
+            </div>
+        </div>
+
+        <!-- Цена -->
+        <div class="price-range-inputs">
+    <div class="price-input-group">
+        <label>От</label>
+        <input type="number" id="minPrice" placeholder="0" min="0" oninput="shop.applyFilters()">
+        <span class="currency">₽</span>
+    </div>
+    <div class="price-input-group">
+        <label>До</label>
+        <input type="number" id="maxPrice" placeholder="10000" min="0" oninput="shop.applyFilters()">
+        <span class="currency">₽</span>
+    </div>
+</div>
+
+        <!-- Наличие -->
+        <div class="filter-section">
+            <div class="filter-section-header">
+                <h4>Наличие</h4>
+            </div>
+            <div class="filter-checkboxes">
+                <label class="filter-checkbox">
+                    <input type="checkbox" id="inStockFilter"> В наличии
+                </label>
+            </div>
+        </div>
+
+        <!-- Кнопки -->
+        <div class="filter-actions">
+            <button class="apply-filters-btn" onclick="shop.applyFilters()">
+                Применить
+            </button>
+            <button class="reset-filters-btn" onclick="shop.clearFilters()">
+                Сбросить
+            </button>
+        </div>
+    </div>
+</aside>
+
+            <main class="content">
+                <div class="carousel">
+                    <div class="slides" id="slides">
+                        <div class="slide">
+                            <img src="images/5-keys.jpg" alt="Акция 1">
+                        </div>
+                        <div class="slide">
+                            <img src="images/purple.png" alt="Акция 2">
+                        </div>
+                        <div class="slide">
+                            <img src="images/purple.png" alt="Акция 3">
+                        </div>
+                    </div>
+                    <div class="nav">
+                        <button id="prev">‹</button>
+                        <button id="next">›</button>
+                    </div>
+                </div>
+<!-- Добавьте этот код сразу после закрывающего </div> карусели -->
+<!-- Упрощенная панель фильтров -->
+
+
+
+                <div class="toolbar">
+                    <div><strong>Найдено</strong> <span id="resultsCount">0</span> товаров</div>
+
+                </div>
+<!-- Легендарные хлебные крошки
+<nav class="breadcrumbs" style="margin-bottom: 20px; padding: 10px 0; font-size: 14px; color: #cbd5e1;">
+    <a href="index.html" style="color: #b73ce7; text-decoration: none;">🏠 Главная</a>
+    <span style="margin: 0 8px;">/</span>
+    <a href="index.html">🛍️ Каталог товаров</a>
+</nav> -->
+                <section class="grid" id="productGrid">
+                    <!-- Products will be loaded here -->
+                </section>
+
+                <div class="pagination" id="pagination"></div>
+            </main>
+        </div>
+
+        <footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>ChichaShop</h4>
+            <p>Премиум электронные сигареты и аксессуары</p>
+
+
+            <div class="social-links">
+                <a href="https://t.me/+MdBnddpPXJhiNjZi" class="social-link" target="_blank">
+                    <span>📱 Telegram</span>
+                </a>
+                <a href="https://instagram.com/your_shop" class="social-link" target="_blank">
+                    <span>📸 Instagram</span>
+                </a>
+                <a href="mailto:info@Chichashop.com" class="social-link">
+                    <span>✉️ Email</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <h4>Информация</h4>
+            <a href="important.html">О магазине</a>
+            <a href="important.html">Доставка и оплата</a>
+            <a href="important.html">Гарантия</a>
+            <a href="important.html">Контакты</a>
+        </div>
+
+        <div class="footer-section">
+            <h4>Помощь</h4>
+            <a href="important.html">FAQ</a>
+            <a href="important.html">Возврат товара</a>
+            <a href="important.html">Политика конфиденциальности</a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+    <p data-i18n="copyright">© 2025 ChichaShop - Магазин электронных сигарет. Все права защищены.</p>
+    <p>Лицам до 18 лет использование запрещено</p>
+</p>
+</footer>
+    </div>
+
+    <!-- Floating cart -->
+    <div class="cart-fab" id="cartFab">
+        🛒
+        <div class="cart-count" id="cartCount">0</div>
+    </div>
+
+
+    <!-- Обновленная форма входа -->
+<div class="modal-backdrop" id="authModal">
+    <div class="modal">
+        <button class="close" onclick="closeModal('authModal')">✕</button>
+        <h2>Вход через Telegram</h2>
+
+        <!-- ШАГ 1: Ввод Telegram и пароля -->
+        <form id="authForm">
+            <div class="form-group">
+                <input type="text" id="authTelegram" placeholder="Telegram username" required>
+                <!--<small style="color: #cbd5e1; font-size: 12px;">Ваш Telegram username</small>-->
+            </div>
+            <div class="form-group">
+                <input type="password" id="authPassword" placeholder="Пароль" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                Получить код в Telegram
+            </button>
+        </form>
+
+        <!-- ШАГ 2: Ввод кода (изначально скрыто) -->
+        <div id="loginStep2" style="display: none; margin-top: 20px;">
+            <h3>Подтверждение кода</h3>
+            <p id="telegramInfo" style="color: #cbd5e1; margin-bottom: 15px;">
+                Код отправлен в Telegram на @username
+            </p>
+            <div class="form-group">
+                <input type="text" id="tgCode" placeholder="6-значный код" maxlength="6">
+            </div>
+            <button onclick="loginStep2()" class="btn btn-primary" style="width: 100%;">
+                Подтвердить код
+            </button>
+            <button onclick="backToStep1()" class="btn btn-ghost" style="width: 100%; margin-top: 10px;">
+                ← Назад
+            </button>
+        </div>
+
+        <!-- Регистрация -->
+        <div style="text-align: center; margin-top: 20px;">
+            <span style="color: #cbd5e1;">Нет аккаунта? </span>
+            <button onclick="openRegisterModal()"
+                    style="background: none; border: none; color: #b73ce7; cursor: pointer; font-weight: 500;">
+                Зарегистрироваться
+            </button>
+        </div> <!-- ЗАБЫЛИ ПАРОЛЬ ПРАВИЛЬНО -->
+            <div style="text-align: center; margin: 10px 0 20px;">
+                <a href="#" onclick="openPasswordRecovery()"
+                   style="color: #b73ce7; font-size: 14px; text-decoration: none;">
+                    Забыли пароль?
+                </a>
+            </div>
+    </div>
+</div>
+    </div>
+
+
+
+
+
+
+    <!-- Register Modal -->
+<div class="modal-backdrop" id="registerModal">
+    <div class="modal">
+        <button class="close" onclick="closeModal('registerModal')">✕</button>
+        <h2>Регистрация через Telegram</h2>
+        <form id="registerForm">
+            <div class="form-group">
+                <input type="text" placeholder="username" id="regTelegram" required>
+                <small style="color: #cbd5e1; font-size: 12px;">
+                    Ваш Telegram username (без @)
+                </small>
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Ваш ник" id="regName" required>
+            </div>
+            <div class="form-group">
+                <input type="password" placeholder="Пароль" id="regPassword" required>
+            </div>
+            <div class="form-group">
+                <input type="password" placeholder="Подтвердите пароль" id="regPasswordConfirm" required>
+            </div>
+            <div class="password-strength">
+    <div class="strength-bar" id="passwordStrength"></div>
+</div>
+<script>document.getElementById('regPassword').addEventListener('input', function() {
+    const password = this.value;
+    let strength = 0;
+
+    if (password.length >= 8) strength++;
+    if (/\d/.test(password)) strength++;
+    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+    if (/[^a-zA-Z0-9]/.test(password)) strength++;
+
+    const bar = document.getElementById('passwordStrength');
+    bar.className = 'strength-bar';
+    if (strength <= 1) bar.classList.add('weak');
+    else if (strength <= 3) bar.classList.add('medium');
+    else bar.classList.add('strong');
+});</script>
+            <div class="telegram-info" style="background: rgba(0, 136, 204, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0;">
+                <h4 style="color: #0088cc; margin: 0 0 10px 0;"> Важно!</h4>
+                <p style="color: #cbd5e1; margin: 0; font-size: 14px;">
+                    После регистрации напишите <strong>/start</strong> нашему боту:
+                    <a href="https://t.me/ChichaShopRobot" target="_blank" style="color: #b73ce7;">@ChichaShop</a>
+                </p>
+            </div>
+            <!-- В футере или в модалке регистрации -->
+<div class="telegram-guide" style="text-align: center; padding: 20px; background: rgba(0, 136, 204, 0.05); border-radius: 10px; margin: 20px 0;">
+    <h4 style="color: #0088cc;"> Как подключить Telegram?</h4>
+    <ol style="text-align: left; color: #cbd5e1; padding-left: 20px;">
+        <li>Зарегистрируйтесь на сайте с вашим Telegram username</li>
+        <li>Напишите <strong>/start</strong> нашему боту:
+            <a href="https://t.me/ваш_бот" target="_blank" style="color: #b73ce7;">@ваш_бот</a>
+        </li>
+        <li>При входе на сайт код придет вам в Telegram</li>
+        <li>Введите код на сайте для подтверждения</li>
+    </ol>
+</div>
+            <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+        </form>
+    </div>
+</div>
+
+<!-- Password Recovery Modal -->
+<div class="modal-backdrop" id="recoveryModal" style="display: none;">
+    <div class="modal" style="max-width: 450px;">
+        <button class="close" onclick="closeRecoveryModal()">✕</button>
+
+        <!-- ШАГ 1: Ввод Telegram username -->
+        <div id="recoveryStep1" class="recovery-step active">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="font-size: 40px; margin-bottom: 10px;">🔐</div>
+                <h3 style="color: #b73ce7;">Восстановление пароля</h3>
+                <p style="color: #cbd5e1;">Введите ваш Telegram username</p>
+            </div>
+
+            <div class="form-group">
+                <input type="text"
+                       id="recoveryTelegram"
+                       placeholder="@username"
+                       style="width: 100%; padding: 14px; text-align: center;">
+                <small style="color: #cbd5e1; display: block; text-align: center; margin-top: 8px;">
+                    Например: @username или просто username
+                </small>
+            </div>
+
+            <button onclick="sendRecoveryCode()"
+                    class="btn btn-primary"
+                    style="width: 100%; padding: 14px; margin-top: 10px;">
+                Отправить код восстановления
+            </button>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <button onclick="backToStep1()"
+                        class="btn btn-ghost"
+                        style="font-size: 14px;">
+                    ← Вернуться ко входу
+                </button>
+            </div>
+        </div>
+
+        <!-- ШАГ 2: Ввод кода -->
+        <div id="recoveryStep2" class="recovery-step" style="display: none;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="font-size: 40px; margin-bottom: 10px;">📨</div>
+                <h3 style="color: #b73ce7;">Код отправлен!</h3>
+                <p style="color: #cbd5e1;">Проверьте Telegram на <strong id="recoveryUser"></strong></p>
+                <p style="color: #7a4bff; font-size: 14px;">Введите 6-значный код:</p>
+            </div>
+
+            <div class="code-inputs" style="justify-content: center; margin: 25px 0;">
+                <input type="text" maxlength="1" class="recovery-code-digit" data-index="1">
+                <input type="text" maxlength="1" class="recovery-code-digit" data-index="2">
+                <input type="text" maxlength="1" class="recovery-code-digit" data-index="3">
+                <input type="text" maxlength="1" class="recovery-code-digit" data-index="4">
+                <input type="text" maxlength="1" class="recovery-code-digit" data-index="5">
+                <input type="text" maxlength="1" class="recovery-code-digit" data-index="6">
+            </div>
+
+            <button onclick="verifyRecoveryCode()"
+                    class="btn btn-primary"
+                    style="width: 100%; padding: 14px;">
+                Подтвердить код
+            </button>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <button onclick="resendRecoveryCode()"
+                        class="btn btn-ghost"
+                        style="font-size: 14px; margin-right: 10px;">
+                    ↻ Отправить код повторно
+                </button>
+                <button onclick="showRecoveryStep(1)"
+                        class="btn btn-ghost"
+                        style="font-size: 14px;">
+                    ← Назад
+                </button>
+            </div>
+        </div>
+
+        <!-- ШАГ 3: Новый пароль -->
+        <div id="recoveryStep3" class="recovery-step" style="display: none;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="font-size: 40px; margin-bottom: 10px;">✨</div>
+                <h3 style="color: #b73ce7;">Новый пароль</h3>
+                <p style="color: #cbd5e1;">Придумайте новый пароль для аккаунта</p>
+            </div>
+
+            <div class="form-group">
+                <input type="password"
+                       id="newPassword"
+                       placeholder="Новый пароль"
+                       style="width: 100%; padding: 14px;">
+            </div>
+
+            <div class="form-group">
+                <input type="password"
+                       id="confirmPassword"
+                       placeholder="Повторите пароль"
+                       style="width: 100%; padding: 14px;">
+            </div>
+
+            <button onclick="setNewPassword()"
+                    class="btn btn-primary"
+                    style="width: 100%; padding: 14px;">
+                Сохранить пароль
+            </button>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <button onclick="showRecoveryStep(2)"
+                        class="btn btn-ghost"
+                        style="font-size: 14px;">
+                    ← Назад
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- Cart Modal -->
+    <div class="modal-backdrop" id="cartModal">
+        <div class="modal">
+            <button class="close" id="cartClose">✕</button>
+            <h2>Корзина</h2>
+            <div id="cartItems"></div>
+            <div class="cart-total">
+                <strong>Итого: <span id="cartTotal">0</span> $</strong>
+            </div>
+            <div class="cart-actions">
+                <button class="btn btn-primary" id="checkoutBtn">Оформить заказ</button>
+                <button class="btn btn-ghost" id="clearCartBtn">Очистить корзину</button>
+            </div>
+        </div>
+    </div>
+<script src="js/compatibility.js"></script>
+<script src="js/products.js"></script>
+<script src="js/product-page.js"></script>
+
+<script src="js/security.js"></script>
+<script src="js/translations.js"></script>
+<script src="js/init.js"></script>
+
+<script src="js/app.js"></script>
+<script src="js/error.js"></script>
+<script src="checkout-system.js"></script>
+<script src="js/password-recovery.js"></script>
+<script src="js/recovery-telegram.js"></script>
+
+    <!-- После других скриптов -->
+<script src="js/auth-system-fixed.js"></script>
+
+<!-- После working-auth.js добавь: -->
+<script>
+// Проверка в консоли что всё работает
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM загружен');
+    console.log('Пользователь:', workingAuth?.currentUser);
+    console.log('Все пользователи:', workingAuth?.users);
+
+    // Принудительно обновляем UI через 1 секунду
+    setTimeout(() => {
+        if (window.workingAuth) {
+            window.workingAuth.updateUI();
+        }
+    }, 1000);
+});
+
+// Функции для кнопок в HTML
+function toggleFavorite(productId) {
+    if (window.workingAuth) {
+        window.workingAuth.toggleFavorite(productId);
+    } else {
+        alert('Система авторизации не загрузилась');
+    }
+}
+
+function handleFavoriteClick(productId, button) {
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    if (!user) {
+        alert('Войдите в систему');
+        if (window.workingAuth) window.workingAuth.openAuthModal();
+        return;
+    }
+
+    if (!user.favorites) user.favorites = [];
+    const existingIndex = user.favorites.findIndex(fav => fav.id === productId);
+
+    if (existingIndex === -1) {
+        user.favorites.push({id: productId});
+        button.innerHTML = '❤️';
+        alert('Добавлено в избранное');
+    } else {
+        user.favorites.splice(existingIndex, 1);
+        button.innerHTML = '🤍';
+        alert('Удалено из избранного');
+    }
+
+    localStorage.setItem('currentUser', JSON.stringify(user));
+
+    // Обновляем workingAuth если есть
+    if (window.workingAuth && window.workingAuth.currentUser) {
+        window.workingAuth.currentUser.favorites = user.favorites;
+    }
+}
+</script>
+
+    <script>
+    // Глобальные функции для быстрого доступа
+    function addToCart(productId) {
+        if (window.shop) shop.addToCart(productId);
+    }
+
+    function toggleFavorite(productId) {
+        if (window.proAuth) proAuth.addToFavorites(productId);
+    }
+</script>
+<script>
+// ГЛОБАЛЬНАЯ ФУНКЦИЯ ДЛЯ СЕРДЕЧЕК
+function toggleFavorite(productId) {
+    if (window.unifiedAuth) {
+        unifiedAuth.toggleFavorite(productId);
+    } else {
+        console.error('unifiedAuth not found');
+    }
+}
+</script>
+<script>
+// САМАЯ ПРОСТАЯ ФУНКЦИЯ СЕРДЕЧЕК
+function handleFavoriteClick(productId, button) {
+    // 1. Проверяем авторизацию
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    if (!user) {
+        alert('Войдите в систему чтобы добавить в избранное');
+        return;
+    }
+
+    // 2. Инициализируем избранное если нет
+    if (!user.favorites) {
+        user.favorites = [];
+    }
+
+    // 3. Проверяем есть ли уже в избранном
+    const existingIndex = user.favorites.findIndex(fav => fav.id === productId);
+
+    // 4. Анимация
+    button.style.transform = 'scale(1.3)';
+
+    setTimeout(() => {
+        button.style.transform = 'scale(1)';
+
+        if (existingIndex === -1) {
+            // Добавляем
+            user.favorites.push({id: productId});
+            button.innerHTML = '❤️';
+            button.classList.add('active');
+            //alert('Добавлено в избранное');
+        } else {
+            // Удаляем
+            user.favorites.splice(existingIndex, 1);
+            button.innerHTML = '🤍';
+            button.classList.remove('active');
+            //alert('Удалено из избранного');
+        }
+
+        // 5. Сохраняем
+        localStorage.setItem('currentUser', JSON.stringify(user));
+
+        // Обновляем unifiedAuth если он есть
+        if (window.unifiedAuth && window.unifiedAuth.currentUser) {
+            window.unifiedAuth.currentUser.favorites = user.favorites;
+        }
+
+    }, 200);
+}
+
+// Обновляем сердечки при загрузке
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user && user.favorites) {
+            document.querySelectorAll('.favorite-btn').forEach(btn => {
+                const card = btn.closest('.card');
+                const productId = parseInt(card.dataset.productId);
+                const isFavorite = user.favorites.some(fav => fav.id === productId);
+
+                if (isFavorite) {
+                    btn.innerHTML = '❤️';
+                    btn.classList.add('active');
+                }
+            });
+        }
+    }, 1000);
+});
+</script>
+<script>
+// ★★★ РАБОЧИЕ СЕРДЕЧКИ - ПРОСТО И БЕЗ ГЛЮКОВ ★★★
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('favorite-btn')) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const btn = e.target;
+        const card = btn.closest('.card');
+        const productId = parseInt(card.dataset.productId);
+
+        handleFavorite(productId, btn);
+    }
+});
+
+function handleFavorite(productId, btn) {
+    // 1. Проверяем авторизацию
+    const userData = localStorage.getItem('currentUser');
+    if (!userData) {
+        alert('Войдите в систему');
+        if (window.unifiedAuth) unifiedAuth.openAuthModal();
+        return;
+    }
+
+    // 2. Получаем пользователя
+    const user = JSON.parse(userData);
+    if (!user.favorites) user.favorites = [];
+
+    // 3. Проверяем есть ли в избранном
+    const isFavorite = user.favorites.some(fav => fav.id === productId);
+
+    // 4. Анимация
+    btn.style.transform = 'scale(1.3)';
+
+    setTimeout(() => {
+        btn.style.transform = 'scale(1)';
+
+        if (isFavorite) {
+            // Удаляем
+            user.favorites = user.favorites.filter(fav => fav.id !== productId);
+            btn.innerHTML = '🤍';
+            btn.classList.remove('active');
+            //showMessage('Удалено из избранного');
+        } else {
+            // Добавляем
+            const product = window.products.find(p => p.id === productId);
+            if (product) {
+                user.favorites.push({id: productId, ...product});
+                btn.innerHTML = '❤️';
+                btn.classList.add('active');
+                //showMessage('Добавлено в избранное');
+            }
+        }
+
+        // 5. Сохраняем
+        localStorage.setItem('currentUser', JSON.stringify(user));
+
+        // Обновляем unifiedAuth если есть
+        if (window.unifiedAuth && window.unifiedAuth.currentUser) {
+            window.unifiedAuth.currentUser.favorites = user.favorites;
+        }
+
+    }, 200);
+}
+
+// Обновляем сердечки при загрузке
+window.addEventListener('load', function() {
+    const userData = localStorage.getItem('currentUser');
+    if (!userData) return;
+
+    const user = JSON.parse(userData);
+    if (!user.favorites) return;
+
+    setTimeout(() => {
+        document.querySelectorAll('.favorite-btn').forEach(btn => {
+            const card = btn.closest('.card');
+            if (!card) return;
+
+            const productId = parseInt(card.dataset.productId);
+            const isFavorite = user.favorites.some(fav => fav.id === productId);
+
+            if (isFavorite) {
+                btn.innerHTML = '❤️';
+                btn.classList.add('active');
+            }
+        });
+    }, 1000);
+});
+
+function showMessage(text) {
+    if (window.shop && shop.showNotification) {
+        shop.showNotification(text);
+    } else {
+        alert(text);
+    }
+}
+</script>
+<script>
+// ПРОСТОЙ И РАБОЧИЙ СКРИПТ ДЛЯ МЕНЮ
+document.addEventListener('DOMContentLoaded', function() {
+    const dotsBtn = document.getElementById('dotsBtn');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+
+    if (dotsBtn && dropdownMenu) {
+        dotsBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Закрытие при клике вне
+        document.addEventListener('click', function() {
+            dropdownMenu.style.display = 'none';
+        });
+
+        // Не закрывать при клике на само меню
+        dropdownMenu.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    }
+});
+</script>
+<script>
+// ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ НА РЕГИСТРАЦИЮ
+function switchToRegister() {
+    // Закрываем модалку логина
+    document.getElementById('authModal').style.display = 'none';
+
+    // Открываем модалку регистрации
+    setTimeout(() => {
+        document.getElementById('registerModal').style.display = 'flex';
+    }, 300);
+}
+
+// ТАКЖЕ ИСПРАВЬ КНОПКУ В ХЕДЕРЕ (если нужно)
+document.addEventListener('DOMContentLoaded', function() {
+    const registerBtn = document.getElementById('registerBtn');
+    if (registerBtn) {
+        registerBtn.onclick = function() {
+            document.getElementById('registerModal').style.display = 'flex';
+        };
+    }
+});
+</script>
+<script>
+// Функция открытия регистрации
+function openRegisterModal() {
+    // Закрываем логин
+    const authModal = document.getElementById('authModal');
+    if (authModal) authModal.style.display = 'none';
+
+    // Открываем регистрацию
+    setTimeout(() => {
+        const registerModal = document.getElementById('registerModal');
+        if (registerModal) registerModal.style.display = 'flex';
+    }, 100);
+}
+</script>
+<!-- Вместе с другими скриптами -->
+
+<script>
+// ЕДИНЫЙ СКРИПТ ДЛЯ ИЗБРАННОГО
+document.addEventListener('DOMContentLoaded', function() {
+    // Инициализация сердечек
+    updateFavoriteButtons();
+
+    // Обработчик кликов
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('favorite-btn')) {
+            e.preventDefault();
+            handleFavoriteClick(e.target);
+        }
+    });
+});
+
+
+
+// В конец скрипта на всех страницах
+
+</script>
+<script>
+// Индикатор силы пароля
+document.addEventListener('DOMContentLoaded', function() {
+    const passwordInput = document.getElementById('regPassword');
+    const strengthBar = document.getElementById('passwordStrength');
+
+    if (passwordInput && strengthBar) {
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            let strength = 0;
+
+            // Проверка длины
+            if (password.length >= 8) strength++;
+
+            // Проверка на наличие цифр
+            if (/\d/.test(password)) strength++;
+
+            // Проверка на наличие букв в разных регистрах
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+
+            // Проверка на спецсимволы
+            if (/[^a-zA-Z0-9]/.test(password)) strength++;
+
+            // Обновляем индикатор
+            strengthBar.className = 'strength-bar';
+
+            if (password.length === 0) {
+                strengthBar.style.width = '0';
+            } else if (strength === 1) {
+                strengthBar.className += ' weak';
+            } else if (strength === 2 || strength === 3) {
+                strengthBar.className += ' medium';
+            } else if (strength >= 4) {
+                strengthBar.className += ' strong';
+            }
+        });
+    }
+
+    // Проверка совпадения паролей
+    const confirmInput = document.getElementById('regPasswordConfirm');
+    if (confirmInput) {
+        confirmInput.addEventListener('input', function() {
+            const password = passwordInput.value;
+            const confirm = this.value;
+
+            if (confirm && password !== confirm) {
+                this.style.borderColor = '#ef4444';
+            } else {
+                this.style.borderColor = '';
+            }
+        });
+    }
+});
+</script>
+<script>
+document.getElementById('registerForm')?.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const telegram = document.getElementById('regTelegram').value;
+    const name = document.getElementById('regName').value;
+    const password = document.getElementById('regPassword').value;
+    const confirm = document.getElementById('regPasswordConfirm').value;
+
+    if (password !== confirm) {
+        alert('❌ Пароли не совпадают');
+        return;
+    }
+
+    if (password.length < 6) {
+        alert('❌ Пароль меньше 6 символов');
+        return;
+    }
+
+    console.log('Регистрация:', { telegram, name });
+    // Здесь вызов API
+});
+</script>
+
+</body>
+</html>

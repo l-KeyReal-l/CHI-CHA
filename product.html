@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Название товара - ChichaShop</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="site">
+        <header class="site-header">
+            <!-- Тот же хедер что в index.html -->
+            <div class="brand">ChichaShop</div>
+            <div class="language-selector">
+                <select id="languageSelect">
+                    <option value="ru">Русский</option>
+                    <option value="uk">Українська</option>    
+                    <option value="en">English</option>
+                    
+                    
+                </select>
+            </div>
+            <div class="search">
+                <input type="search" id="search" placeholder="Поиск товаров..." />
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-ghost" id="authBtn">Войти</button>
+                <button class="btn btn-primary" id="registerBtn">Регистрация</button>
+                <div class="dots-menu">
+                    <button class="btn btn-ghost">•••</button>
+                    <div class="dropdown-content">
+                        <a href="index.html" class="dropdown-item">Каталог</a>
+                        <a href="orders.html" class="dropdown-item">Мои заказы</a>
+                       
+                        <a href="profile.html" class="dropdown-item">Профиль</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <nav class="breadcrumbs" style="margin-bottom: 20px; padding: 10px 0; font-size: 14px; color: #cbd5e1;">
+    <a href="index.html" style="color: #b73ce7; text-decoration: none;">🏠 Главная</a> 
+    <span style="margin: 0 8px;">/</span>
+    <a href="index.html" style="color: #b73ce7; text-decoration: none;">🛍️ Каталог</a>
+    <span style="margin: 0 8px;">/</span>
+    <span style="color: #ffffff;" id="productBreadcrumb">Товар</span>
+</nav>
+        <div class="container">
+            <main class="product-page">
+                <!-- Хлебные крошки -->
+                <nav class="breadcrumbs">
+                    <a href="index.html">Главная</a> / 
+                    <a href="index.html">Каталог</a> / 
+                    <span id="productCategory">Товар</span>
+                </nav>
+
+                <!-- Основная информация о товаре -->
+                <div class="product-detail">
+                    <div class="product-gallery">
+                        <div class="main-image">
+                            <img id="productImage" src="" alt="">
+                        </div>
+                    </div>
+                    
+                    <div class="product-info">
+                        <h1 id="productTitle">Название товара</h1>
+                        <div class="product-rating">
+                            ⭐⭐⭐⭐⭐ <span class="rating-count">(12 отзывов)</span>
+                        </div>
+                        <div class="product-price" id="productPrice">0 руб.</div>
+                        
+                        <div class="product-actions">
+                            <button class="btn btn-primary" id="addToCartBtn">Добавить в корзину</button>
+                        </div>
+                        
+                        <div class="product-description">
+                            <h3>Описание</h3>
+                            <p id="productDescription">Описание товара...</p>
+                        </div>
+                        
+                        <div class="product-specs">
+                            <h3>Характеристики</h3>
+                            <div class="specs-grid" id="productSpecs">
+                                <!-- Характеристики загрузятся через JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Похожие товары -->
+                <section class="similar-products">
+                    <h2>Похожие товары</h2>
+<div class="similar-carousel">
+                        <button class="carousel-btn prev" id="similarPrev">‹</button>
+                        <div class="similar-grid" id="similarGrid">
+                            <!-- Похожие товары загрузятся через JS -->
+                        </div>
+                        <button class="carousel-btn next" id="similarNext">›</button>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Тот же футер -->
+        <footer class="site-footer">
+            <!-- Твой новый футер -->
+        </footer>
+    </div>
+
+    <!-- Модалки (такие же как в index.html) -->
+    
+    <script src="products.js"></script>
+    <script src="product-page.js"></script>
+</body>
+</html>
